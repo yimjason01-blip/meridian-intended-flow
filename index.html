@@ -19,15 +19,15 @@
   .note { font-size:12px; font-weight:400; fill:var(--muted); }
   .arrow { stroke:var(--line); stroke-width:2; fill:none; marker-end:url(#arrow); }
   .loop { stroke:var(--line); stroke-width:2; fill:none; stroke-dasharray:6 5; marker-end:url(#arrow); }
-  .branch-label { font-size:13px; font-weight:700; fill:var(--ink); }
+  .branch-label { font-size:14px; font-weight:700; fill:var(--ink); }
 </style>
 </head>
 <body>
 <main>
   <h1>Meridian Onboarding and Cadence Flow</h1>
-  <p class="sub">Plain logic only. Rectangles are actions. Diamonds are decisions. Arrows are the flow.</p>
+  <p class="sub">Plain logic only. Rectangles are actions. Diamonds are decisions. Solid arrows advance the flow. Dashed arrows loop back.</p>
 
-  <svg viewBox="0 0 1144 2780" role="img" aria-label="Basic flow chart for Meridian onboarding and cadence logic">
+  <svg viewBox="0 0 1144 2700" role="img" aria-label="Basic flow chart for Meridian onboarding and cadence logic">
     <defs>
       <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"></path>
@@ -151,7 +151,7 @@
     <text class="label" x="270" y="1948" text-anchor="middle">30 day targeted recheck</text>
 
     <path class="arrow" d="M572 1864 L572 1912"></path>
-    <text class="branch-label" x="592" y="1888">MED</text>
+    <text class="branch-label" x="590" y="1886">MEDIUM</text>
     <rect class="process" x="432" y="1912" width="280" height="58"></rect>
     <text class="label" x="572" y="1948" text-anchor="middle">90 day targeted recheck</text>
 
@@ -198,7 +198,7 @@
     <text class="label" x="270" y="2594" text-anchor="middle">Shorten interval</text>
 
     <path class="arrow" d="M572 2510 L572 2558"></path>
-    <text class="branch-label" x="592" y="2534">MAINTAIN</text>
+    <text class="branch-label" x="592" y="2532">MAINTAIN</text>
     <rect class="process" x="432" y="2558" width="280" height="58"></rect>
     <text class="label" x="572" y="2594" text-anchor="middle">Keep interval</text>
 
@@ -211,11 +211,7 @@
     <path class="loop" d="M270 2616 L270 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
     <path class="loop" d="M572 2616 L572 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
     <path class="loop" d="M875 2616 L875 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
-    <text class="note" x="1025" y="2662" text-anchor="end">cadence loop returns to cadence tier, then the next recheck interval</text>
-
-    <!-- Ongoing endpoint -->
-    <rect class="terminator" x="392" y="2704" width="360" height="58" rx="29"></rect>
-    <text class="label" x="572" y="2738" text-anchor="middle">ONGOING: membership cadence</text>
+    <text class="branch-label" x="1025" y="2662" text-anchor="end">LOOP BACK: choose next cadence tier, then run next recheck</text>
   </svg>
 </main>
 </body>
