@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meridian Intended Flow</title>
+  <style>
+    :root {
+      --bg: #08090a;
+      --panel: #111316;
+      --panel-2: #15191d;
+      --ink: #f4f1ea;
+      --muted: #a7a19a;
+      --hair: rgba(244, 241, 234, 0.13);
+      --gold: #d6a24b;
+      --gold-2: #f0c977;
+      --cyan: #6db1c9;
+      --green: #5aa36f;
+      --purple: #9d7ae3;
+      --coral: #e8604c;
+      --blue: #5e6ad2;
+      --cream: #efe4d3;
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(214, 162, 75, 0.10), transparent 28%),
+        radial-gradient(circle at 78% 18%, rgba(109, 177, 201, 0.10), transparent 24%),
+        linear-gradient(180deg, #0b0c0e 0%, var(--bg) 100%);
+      color: var(--ink);
+    }
+
+    .page {
+      width: 1500px;
+      min-height: 1080px;
+      margin: 0 auto;
+      padding: 44px 48px 54px;
+      position: relative;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr 410px;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .kicker {
+      color: var(--gold-2);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 720;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 52px;
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      max-width: 850px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      margin-top: 18px;
+      max-width: 820px;
+    }
+
+    .principle {
+      border: 1px solid rgba(214, 162, 75, 0.32);
+      background: rgba(214, 162, 75, 0.08);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .principle .label {
+      color: var(--gold-2);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 11px;
+      font-weight: 760;
+      margin-bottom: 10px;
+    }
+
+    .principle p {
+      margin: 0;
+      color: #f7ead2;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .canvas {
+      position: relative;
+      height: 790px;
+      border: 1px solid var(--hair);
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(244, 241, 234, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244, 241, 234, 0.035) 1px, transparent 1px),
+        rgba(13, 15, 17, 0.92);
+      background-size: 28px 28px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+    }
+
+    svg.wires {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .rail {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      border: 1px solid rgba(244, 241, 234, 0.09);
+      background: rgba(255, 255, 255, 0.025);
+      border-radius: 22px;
+      z-index: 0;
+    }
+
+    .rail-label {
+      position: absolute;
+      left: 46px;
+      top: -13px;
+      background: #0d0f11;
+      color: var(--muted);
+      border: 1px solid rgba(244, 241, 234, 0.10);
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 720;
+    }
+
+    .rail.core { top: 30px; height: 214px; }
+    .rail.parallel { top: 270px; height: 236px; }
+    .rail.review { top: 532px; height: 226px; }
+
+    .node {
+      position: absolute;
+      z-index: 2;
+      width: 220px;
+      min-height: 132px;
+      border: 1px solid rgba(244, 241, 234, 0.14);
+      background: linear-gradient(180deg, rgba(21, 25, 29, 0.98), rgba(15, 17, 20, 0.98));
+      border-radius: 18px;
+      padding: 16px 17px 15px;
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.35);
+    }
+
+    .node.big { width: 260px; min-height: 158px; }
+    .node.wide { width: 294px; }
+    .node.slim { min-height: 112px; }
+
+    .node::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--accent);
+      margin-bottom: 13px;
+      box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 50%, transparent);
+    }
+
+    .node h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.42;
+    }
+
+    .node ul {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      color: #d8d0c6;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .node li { margin-top: 5px; }
+    .node li::before { content: "• "; color: var(--accent); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #0b0c0e;
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 5px 9px;
+      margin-top: 12px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .n1 { left: 56px; top: 66px; --accent: var(--cyan); }
+    .n2 { left: 340px; top: 66px; --accent: var(--gold); }
+    .n3 { left: 642px; top: 54px; --accent: var(--green); }
+    .n4 { left: 982px; top: 66px; --accent: var(--purple); }
+    .n5 { left: 56px; top: 318px; --accent: var(--coral); }
+    .n6 { left: 360px; top: 315px; --accent: var(--blue); }
+    .n7 { left: 665px; top: 315px; --accent: var(--green); }
+    .n8 { left: 990px; top: 315px; --accent: var(--gold); }
+    .n9 { left: 160px; top: 580px; --accent: var(--cyan); }
+    .n10 { left: 470px; top: 580px; --accent: var(--gold); }
+    .n11 { left: 790px; top: 580px; --accent: var(--purple); }
+    .n12 { left: 1110px; top: 580px; --accent: var(--green); }
+
+    .note {
+      position: absolute;
+      z-index: 3;
+      left: 1010px;
+      top: 184px;
+      width: 360px;
+      border: 1px solid rgba(232, 96, 76, 0.35);
+      background: rgba(232, 96, 76, 0.08);
+      border-radius: 16px;
+      padding: 14px 15px;
+      color: #ffddd7;
+      font-size: 12px;
+      line-height: 1.42;
+    }
+
+    .note strong {
+      display: block;
+      color: #ffc3b9;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .phase {
+      border: 1px solid var(--hair);
+      border-radius: 16px;
+      padding: 14px 15px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .phase .num {
+      color: var(--gold-2);
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .phase .title {
+      font-weight: 760;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .phase .body {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .legend {
+      position: absolute;
+      right: 28px;
+      top: 518px;
+      z-index: 4;
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      background: rgba(8, 9, 10, 0.76);
+      border: 1px solid rgba(244, 241, 234, 0.10);
+      border-radius: 999px;
+      padding: 9px 12px;
+      backdrop-filter: blur(12px);
+    }
+
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: var(--c); }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #817a73;
+      font-size: 11px;
+      margin-top: 18px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <div class="kicker">Meridian intended flow</div>
+        <h1>Get to a decision conversation, not a testing conversation.</h1>
+        <p class="subtitle">The onboarding flow collects enough structured context, labs, imaging, and functional data before the first physician visit so the visit can focus on the few decisions that actually change trajectory.</p>
+      </div>
+      <aside class="principle">
+        <div class="label">Operating principle</div>
+        <p>Baseline is one coordinated collection event wherever possible. Genetics informs surveillance and interpretation, but it should not block the blood draw because the foundation panel already covers the key blood markers. Do not split baseline into a home capillary kit plus a separate lab visit.</p>
+      </aside>
+    </header>
+
+    <section class="canvas" aria-label="Meridian onboarding and labs flow diagram">
+      <div class="rail core"><div class="rail-label">Core setup and lab composition</div></div>
+      <div class="rail parallel"><div class="rail-label">Single collection event plus parallel rails</div></div>
+      <div class="rail review"><div class="rail-label">Synthesis, first conversation, and cadence</div></div>
+
+      <svg class="wires" viewBox="0 0 1404 790" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d6a24b"/>
+          </marker>
+          <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6db1c9"/>
+          </marker>
+          <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6f747a"/>
+          </marker>
+        </defs>
+
+        <path d="M276 132 H330" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+        <path d="M600 132 H632" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+        <path d="M936 132 H972" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+        <path d="M1112 204 C1112 250 160 258 160 306" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+
+        <path d="M276 384 H350" stroke="#5e6ad2" stroke-width="3" marker-end="url(#arrowMuted)"/>
+        <path d="M620 384 H655" stroke="#5e6ad2" stroke-width="3" marker-end="url(#arrowMuted)"/>
+        <path d="M925 384 H980" stroke="#5e6ad2" stroke-width="3" marker-end="url(#arrowMuted)"/>
+
+        <path d="M1110 474 C1110 532 300 532 300 568" stroke="#6db1c9" stroke-width="3" marker-end="url(#arrowCyan)"/>
+        <path d="M420 640 H460" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+        <path d="M730 640 H780" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+        <path d="M1050 640 H1100" stroke="#d6a24b" stroke-width="3" marker-end="url(#arrowGold)"/>
+
+        <path d="M770 212 C770 252 492 258 492 304" stroke="#6db1c9" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowCyan)"/>
+        <path d="M806 212 C806 252 808 258 808 304" stroke="#6db1c9" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowCyan)"/>
+      </svg>
+
+      <article class="node n1 slim">
+        <h2>Structured intake</h2>
+        <p>History, goals, symptoms, family history, meds, preferences, and prior records.</p>
+        <ul><li>Starts the 2 week clock</li><li>Creates the first problem frame</li></ul>
+      </article>
+
+      <article class="node n2 slim">
+        <h2>Wearable backfill</h2>
+        <p>Thirty days of signals from Apple Health, Oura, Whoop, Garmin, Dexcom, or available sources.</p>
+        <ul><li>Sleep, activity, HRV, glucose</li><li>Interpretation context for labs</li></ul>
+      </article>
+
+      <article class="node n3 big">
+        <h2>Adaptive lab plan</h2>
+        <p>Universal foundation panel plus intake-triggered add-ons. The panel is composed before collection, but not blocked by genetics.</p>
+        <ul><li>Cardiometabolic, renal, inflammatory</li><li>Hormones, thyroid, PSA when appropriate</li><li>Quest venous rail for full baseline</li></ul>
+      </article>
+
+      <article class="node n4 slim">
+        <h2>Genetics kit</h2>
+        <p>Runs in parallel. It informs surveillance, imaging, and interpretation more than lab composition.</p>
+        <span class="badge">Non-blocking</span>
+      </article>
+
+      <article class="node n5 big">
+        <h2>Mobile phlebotomy</h2>
+        <p>One coordinated home or office blood draw. Quest remains the venous processing rail.</p>
+        <ul><li>Baseline quality over novelty</li><li>Full CBC and chemistry capability</li><li>Capillary kits move to rechecks</li></ul>
+      </article>
+
+      <article class="node n6 big">
+        <h2>Imaging rail</h2>
+        <p>Parallel scheduling for tests that change the first conversation.</p>
+        <ul><li>DEXA for body composition</li><li>CAC for midlife CVD framing</li><li>Cancer or MRI path when risk-gated</li></ul>
+      </article>
+
+      <article class="node n7 big">
+        <h2>Functional rail</h2>
+        <p>Measures capacity and resilience rather than only disease risk.</p>
+        <ul><li>CPET or VO2 evidence</li><li>Grip strength</li><li>Force plate or movement screen</li></ul>
+      </article>
+
+      <article class="node n8 big">
+        <h2>Result intake</h2>
+        <p>Labs, images, genetics, wearable history, and functional data land into one physician pre-read packet.</p>
+        <ul><li>No raw-data dump</li><li>Domain summaries with deltas</li></ul>
+      </article>
+
+      <article class="node n9 wide">
+        <h2>Doctor pre-read</h2>
+        <p>Delivered 24 to 48 hours before the first visit. Written like a physician note, not a portal notification.</p>
+        <ul><li>Top findings</li><li>Open decisions</li><li>Where uncertainty remains</li></ul>
+      </article>
+
+      <article class="node n10 wide">
+        <h2>First conversation</h2>
+        <p>The physician visit is decision-only: what to do now, what to watch, and what not to over-medicalize.</p>
+        <ul><li>Top 3 to 5 actions</li><li>Domain risk tradeoffs</li><li>Patient-specific priorities</li></ul>
+      </article>
+
+      <article class="node n11 wide">
+        <h2>Care plan release</h2>
+        <p>Actions become a plan with accountability, timing, orders, and a monitoring schema.</p>
+        <ul><li>Risk reduction bucket</li><li>Monitoring bucket</li><li>Clear ownership</li></ul>
+      </article>
+
+      <article class="node n12 wide">
+        <h2>Cadence moat</h2>
+        <p>Follow-up is risk-tiered by domain. Tasso-style capillary kits belong here for focused rechecks, not in baseline.</p>
+        <ul><li>Labs by domain cadence</li><li>Wearables as continuous context</li><li>Imaging and function at slower intervals</li></ul>
+      </article>
+
+      <div class="legend">
+        <span><i class="dot" style="--c: #d6a24b"></i>Main sequence</span>
+        <span><i class="dot" style="--c: #6db1c9"></i>Parallel context</span>
+        <span><i class="dot" style="--c: #5e6ad2"></i>Collection rails</span>
+      </div>
+    </section>
+
+    <section class="timeline" aria-label="Five phase summary">
+      <div class="phase"><div class="num">Phase 1</div><div class="title">Structured intake</div><div class="body">History, prior records, wearable backfill, genetics kit started.</div></div>
+      <div class="phase"><div class="num">Phase 2</div><div class="title">Single collection event</div><div class="body">Mobile phlebotomy plus parallel imaging and functional rails.</div></div>
+      <div class="phase"><div class="num">Phase 3</div><div class="title">Integration</div><div class="body">All sources turn into a physician pre-read and patient-facing frame.</div></div>
+      <div class="phase"><div class="num">Phase 4</div><div class="title">First visit</div><div class="body">Decision conversation focused on the highest-leverage moves.</div></div>
+      <div class="phase"><div class="num">Phase 5</div><div class="title">Cadence</div><div class="body">Risk-tiered monitoring, rechecks, orders, and accountability.</div></div>
+    </section>
+
+    <div class="footer">
+      <div>Meridian onboarding and labs flow</div>
+      <div>Generated as standalone HTML</div>
+    </div>
+  </main>
+</body>
+</html>
