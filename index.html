@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Meridian Basic Flow Chart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#ffffff; --ink:#111111; --line:#111111; --muted:#555555; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: Arial, Helvetica, sans-serif; }
+  main { width:1200px; margin:0 auto; padding:28px 28px 48px; }
+  h1 { margin:0 0 6px; font-size:26px; font-weight:700; }
+  .sub { margin:0 0 22px; color:var(--muted); font-size:14px; }
+  svg { width:1144px; height:auto; display:block; border:1px solid #cccccc; background:#ffffff; }
+  .process, .decision, .terminator { fill:#ffffff; stroke:var(--line); stroke-width:2; }
+  .terminator { rx:28; }
+  .label { font-size:16px; font-weight:700; fill:var(--ink); }
+  .small { font-size:13px; font-weight:400; fill:var(--ink); }
+  .note { font-size:12px; font-weight:400; fill:var(--muted); }
+  .arrow { stroke:var(--line); stroke-width:2; fill:none; marker-end:url(#arrow); }
+  .loop { stroke:var(--line); stroke-width:2; fill:none; stroke-dasharray:6 5; marker-end:url(#arrow); }
+  .branch-label { font-size:13px; font-weight:700; fill:var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Meridian Onboarding and Cadence Flow</h1>
+  <p class="sub">Plain logic only. Rectangles are actions. Diamonds are decisions. Arrows are the flow.</p>
+
+  <svg viewBox="0 0 1144 2780" role="img" aria-label="Basic flow chart for Meridian onboarding and cadence logic">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"></path>
+      </marker>
+    </defs>
+
+    <!-- Coordinates: center column x=472, side columns x=130 and x=815 -->
+
+    <!-- Start -->
+    <rect class="terminator" x="392" y="24" width="360" height="58" rx="29"></rect>
+    <text class="label" x="572" y="58" text-anchor="middle">START: patient begins onboarding</text>
+    <path class="arrow" d="M572 82 L572 124"></path>
+
+    <!-- Intake complete? -->
+    <polygon class="decision" points="572,124 722,204 572,284 422,204"></polygon>
+    <text class="label" x="572" y="195" text-anchor="middle">Intake complete?</text>
+    <text class="small" x="572" y="216" text-anchor="middle">history, meds, goals, consent, records</text>
+
+    <!-- No branch: resolve missing -->
+    <path class="arrow" d="M422 204 L250 204 L250 326"></path>
+    <text class="branch-label" x="340" y="192" text-anchor="middle">NO</text>
+    <rect class="process" x="90" y="326" width="320" height="74"></rect>
+    <text class="label" x="250" y="356" text-anchor="middle">Coordinator resolves gaps</text>
+    <text class="small" x="250" y="378" text-anchor="middle">missing consent, records, payer, history</text>
+    <path class="loop" d="M250 326 L250 110 L572 110 L572 124"></path>
+
+    <!-- Yes to risk tier -->
+    <path class="arrow" d="M572 284 L572 330"></path>
+    <text class="branch-label" x="592" y="308">YES</text>
+    <rect class="process" x="392" y="330" width="360" height="74"></rect>
+    <text class="label" x="572" y="360" text-anchor="middle">Assign initial risk tier</text>
+    <text class="small" x="572" y="382" text-anchor="middle">uses intake, family history, prior data</text>
+    <path class="arrow" d="M572 404 L572 450"></path>
+
+    <!-- Baseline labs -->
+    <rect class="process" x="392" y="450" width="360" height="74"></rect>
+    <text class="label" x="572" y="480" text-anchor="middle">Order baseline venous panel</text>
+    <text class="small" x="572" y="502" text-anchor="middle">universal foundation plus tier add-ons</text>
+    <path class="arrow" d="M572 524 L572 570"></path>
+
+    <!-- Genetics in parallel -->
+    <rect class="process" x="392" y="570" width="360" height="74"></rect>
+    <text class="label" x="572" y="600" text-anchor="middle">Send genetics kit in parallel</text>
+    <text class="small" x="572" y="622" text-anchor="middle">does not block venous draw</text>
+    <path class="arrow" d="M572 644 L572 690"></path>
+
+    <!-- Imaging indicated? -->
+    <polygon class="decision" points="572,690 722,770 572,850 422,770"></polygon>
+    <text class="label" x="572" y="762" text-anchor="middle">Imaging indicated?</text>
+    <text class="small" x="572" y="783" text-anchor="middle">risk tier or history changes decision</text>
+
+    <!-- Imaging yes -->
+    <path class="arrow" d="M722 770 L875 770 L875 902"></path>
+    <text class="branch-label" x="786" y="758" text-anchor="middle">YES</text>
+    <rect class="process" x="735" y="902" width="280" height="74"></rect>
+    <text class="label" x="875" y="932" text-anchor="middle">Order imaging</text>
+    <text class="small" x="875" y="954" text-anchor="middle">DEXA, CAC, MRI as indicated</text>
+    <path class="arrow" d="M875 976 L875 1040 L572 1040"></path>
+
+    <!-- Imaging no -->
+    <path class="arrow" d="M422 770 L270 770 L270 902"></path>
+    <text class="branch-label" x="360" y="758" text-anchor="middle">NO</text>
+    <rect class="process" x="130" y="902" width="280" height="74"></rect>
+    <text class="label" x="270" y="932" text-anchor="middle">Skip imaging</text>
+    <text class="small" x="270" y="954" text-anchor="middle">no imaging before baseline visit</text>
+    <path class="arrow" d="M270 976 L270 1040 L572 1040"></path>
+
+    <!-- Merge to results returned -->
+    <path class="arrow" d="M572 850 L572 1040"></path>
+    <polygon class="decision" points="572,1040 722,1120 572,1200 422,1120"></polygon>
+    <text class="label" x="572" y="1112" text-anchor="middle">Critical data back?</text>
+    <text class="small" x="572" y="1133" text-anchor="middle">labs plus any required imaging or genetics</text>
+
+    <!-- No data -->
+    <path class="arrow" d="M422 1120 L250 1120 L250 1246"></path>
+    <text class="branch-label" x="340" y="1108" text-anchor="middle">NO</text>
+    <rect class="process" x="90" y="1246" width="320" height="74"></rect>
+    <text class="label" x="250" y="1276" text-anchor="middle">Coordinator follows up</text>
+    <text class="small" x="250" y="1298" text-anchor="middle">lab issue, kit delay, missing record</text>
+    <path class="loop" d="M250 1246 L250 1020 L572 1020 L572 1040"></path>
+
+    <!-- Yes to dossier -->
+    <path class="arrow" d="M572 1200 L572 1246"></path>
+    <text class="branch-label" x="592" y="1224">YES</text>
+    <rect class="process" x="392" y="1246" width="360" height="74"></rect>
+    <text class="label" x="572" y="1276" text-anchor="middle">Assemble pre-visit dossier</text>
+    <text class="small" x="572" y="1298" text-anchor="middle">system plus coordinator prepare physician pre-read</text>
+    <path class="arrow" d="M572 1320 L572 1366"></path>
+
+    <!-- Dossier sufficient? -->
+    <polygon class="decision" points="572,1366 722,1446 572,1526 422,1446"></polygon>
+    <text class="label" x="572" y="1438" text-anchor="middle">Dossier sufficient?</text>
+    <text class="small" x="572" y="1459" text-anchor="middle">enough to make visit decisions</text>
+
+    <!-- No dossier -->
+    <path class="arrow" d="M422 1446 L250 1446 L250 1572"></path>
+    <text class="branch-label" x="340" y="1434" text-anchor="middle">NO</text>
+    <rect class="process" x="90" y="1572" width="320" height="74"></rect>
+    <text class="label" x="250" y="1602" text-anchor="middle">Resolve missing critical item</text>
+    <text class="small" x="250" y="1624" text-anchor="middle">hold visit only if decision would be unsafe</text>
+    <path class="loop" d="M250 1572 L250 1346 L572 1346 L572 1366"></path>
+
+    <!-- Yes visit -->
+    <path class="arrow" d="M572 1526 L572 1572"></path>
+    <text class="branch-label" x="592" y="1550">YES</text>
+    <rect class="process" x="392" y="1572" width="360" height="86"></rect>
+    <text class="label" x="572" y="1602" text-anchor="middle">Physician visit</text>
+    <text class="small" x="572" y="1624" text-anchor="middle">decide interventions, monitoring, cadence</text>
+    <text class="small" x="572" y="1644" text-anchor="middle">also decide what not to chase</text>
+    <path class="arrow" d="M572 1658 L572 1704"></path>
+
+    <!-- Cadence tier -->
+    <polygon class="decision" points="572,1704 722,1784 572,1864 422,1784"></polygon>
+    <text class="label" x="572" y="1776" text-anchor="middle">Cadence tier?</text>
+    <text class="small" x="572" y="1797" text-anchor="middle">based on risk and action burden</text>
+
+    <!-- Cadence branches -->
+    <path class="arrow" d="M422 1784 L270 1784 L270 1912"></path>
+    <text class="branch-label" x="345" y="1772" text-anchor="middle">HIGH</text>
+    <rect class="process" x="130" y="1912" width="280" height="58"></rect>
+    <text class="label" x="270" y="1948" text-anchor="middle">30 day targeted recheck</text>
+
+    <path class="arrow" d="M572 1864 L572 1912"></path>
+    <text class="branch-label" x="592" y="1888">MED</text>
+    <rect class="process" x="432" y="1912" width="280" height="58"></rect>
+    <text class="label" x="572" y="1948" text-anchor="middle">90 day targeted recheck</text>
+
+    <path class="arrow" d="M722 1784 L875 1784 L875 1912"></path>
+    <text class="branch-label" x="800" y="1772" text-anchor="middle">LOW</text>
+    <rect class="process" x="735" y="1912" width="280" height="58"></rect>
+    <text class="label" x="875" y="1948" text-anchor="middle">180 day targeted recheck</text>
+
+    <!-- Merge to recheck returned -->
+    <path class="arrow" d="M270 1970 L270 2004 L572 2004 L572 2024"></path>
+    <path class="arrow" d="M572 1970 L572 2024"></path>
+    <path class="arrow" d="M875 1970 L875 2004 L572 2004 L572 2024"></path>
+
+    <!-- Recheck data returned? -->
+    <polygon class="decision" points="572,2024 722,2104 572,2184 422,2104"></polygon>
+    <text class="label" x="572" y="2096" text-anchor="middle">Recheck data returned?</text>
+    <text class="small" x="572" y="2117" text-anchor="middle">targeted labs or other monitoring input</text>
+
+    <!-- No recheck data -->
+    <path class="arrow" d="M422 2104 L250 2104 L250 2230"></path>
+    <text class="branch-label" x="340" y="2092" text-anchor="middle">NO</text>
+    <rect class="process" x="90" y="2230" width="320" height="74"></rect>
+    <text class="label" x="250" y="2260" text-anchor="middle">Coordinator follows up</text>
+    <text class="small" x="250" y="2282" text-anchor="middle">kit not returned, lab failed, patient delayed</text>
+    <path class="loop" d="M250 2230 L250 2004 L572 2004 L572 2024"></path>
+
+    <!-- Yes update trajectory -->
+    <path class="arrow" d="M572 2184 L572 2230"></path>
+    <text class="branch-label" x="592" y="2208">YES</text>
+    <rect class="process" x="392" y="2230" width="360" height="74"></rect>
+    <text class="label" x="572" y="2260" text-anchor="middle">Update trajectory</text>
+    <text class="small" x="572" y="2282" text-anchor="middle">compare response against expected direction</text>
+    <path class="arrow" d="M572 2304 L572 2350"></path>
+
+    <!-- Change cadence? -->
+    <polygon class="decision" points="572,2350 722,2430 572,2510 422,2430"></polygon>
+    <text class="label" x="572" y="2422" text-anchor="middle">Change cadence?</text>
+    <text class="small" x="572" y="2443" text-anchor="middle">based on trajectory and risk</text>
+
+    <!-- Intensify / maintain / de-escalate -->
+    <path class="arrow" d="M422 2430 L270 2430 L270 2558"></path>
+    <text class="branch-label" x="345" y="2418" text-anchor="middle">INTENSIFY</text>
+    <rect class="process" x="130" y="2558" width="280" height="58"></rect>
+    <text class="label" x="270" y="2594" text-anchor="middle">Shorten interval</text>
+
+    <path class="arrow" d="M572 2510 L572 2558"></path>
+    <text class="branch-label" x="592" y="2534">MAINTAIN</text>
+    <rect class="process" x="432" y="2558" width="280" height="58"></rect>
+    <text class="label" x="572" y="2594" text-anchor="middle">Keep interval</text>
+
+    <path class="arrow" d="M722 2430 L875 2430 L875 2558"></path>
+    <text class="branch-label" x="810" y="2418" text-anchor="middle">DE-ESCALATE</text>
+    <rect class="process" x="735" y="2558" width="280" height="58"></rect>
+    <text class="label" x="875" y="2594" text-anchor="middle">Lengthen interval</text>
+
+    <!-- Loop back to cadence tier for the next targeted recheck -->
+    <path class="loop" d="M270 2616 L270 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
+    <path class="loop" d="M572 2616 L572 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
+    <path class="loop" d="M875 2616 L875 2680 L1060 2680 L1060 1684 L572 1684 L572 1704"></path>
+    <text class="note" x="1025" y="2662" text-anchor="end">cadence loop returns to cadence tier, then the next recheck interval</text>
+
+    <!-- Ongoing endpoint -->
+    <rect class="terminator" x="392" y="2704" width="360" height="58" rx="29"></rect>
+    <text class="label" x="572" y="2738" text-anchor="middle">ONGOING: membership cadence</text>
+  </svg>
+</main>
+</body>
+</html>
